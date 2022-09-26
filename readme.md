@@ -10,11 +10,11 @@ A GUI to download BuildManifest files for Apple Devices
 ## Installation
 
 ```
-git clone git@github.com:doms9/scripts.git
+git clone https://github.com/doms9/DownBM.git
 
-cd ./scripts/python/DownBM/
+cd ./DownBM/
 
-make
+bash -c ./build.sh
 ```
 
 After the build script is executed, run the "DownBM" executable.
