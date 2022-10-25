@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from remotezip import RemoteZip
 
 
-class Ui_MainWindow(object):
+class Ui_MainWindow:
     def setupUi(self, MainWindow) -> None:
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1000, 700)
