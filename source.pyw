@@ -91,7 +91,7 @@ class Ui_MainWindow(object):
         # Put devices into listbox
         self.iPhone_listbox.addItems([*get_names()])
 
-    def device_id(self) -> Any | None:
+    def device_id(self):
         with devices_json_file.open(encoding="utf-8") as f:
             data = json.load(f)
         for dev in data["devices"]:
@@ -100,7 +100,7 @@ class Ui_MainWindow(object):
 
         return None
 
-    def build_id(self, identifier: str) -> Any | None:
+    def build_id(self, identifier: str):
         with devices_json_file.open(encoding="utf8") as f1:
             data_1 = json.load(f1)
 
@@ -251,7 +251,7 @@ def pick_new() -> None:
     folder_path = Path(folder_path).resolve()
 
 
-def download_path() -> Path | str:
+def download_path():
     return folder_path
 
 
