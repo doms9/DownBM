@@ -111,12 +111,12 @@ class Ui_MainWindow(object):
     def download_manifest(self) -> None:
         firmwares = self.apple_firmware_entrybox.toPlainText().strip().split("|")
 
-        model = self.device_id()
+        identifier = self.device_id()
 
         if self.iPhone_listbox.currentItem().text() == "":
             messagebox.showerror("Error", "Please select an Apple device")
 
-        elif model is None:
+        elif identifier is None:
             messagebox.showerror("Error", "Please select a valid Apple device")
 
         elif not download_path().is_dir():
@@ -134,7 +134,7 @@ class Ui_MainWindow(object):
                             ios_version, ios_build_id = ipsw_id[1], ipsw_id[2]
                         elif (
                             (
-                                int(re.sub(r"[^\d]*|\d*$", "", model)) < 7
+                                int(re.sub(r"[^\d]*|\d*$", "", identifier)) < 7
                                 and len(ipsw_id) > 5
                             )
                             or ("P3" == ipsw_id[2])
@@ -155,34 +155,29 @@ class Ui_MainWindow(object):
                     bm = requests.get(bm_link, timeout=10)
 
                     if bm.status_code == 200:
-
-                        (download_path() / f"{model}").mkdir(exist_ok=True)
-
                         (
                             download_path()
-                            / f"{model}/{ios_version}-{ios_build_id}-{self.build_id(model)}.plist"
+                            / f"{ios_version}-{ios_build_id}-{self.build_id(identifier)}.plist"
                         ).write_bytes(bm.content)
 
                         messagebox.showinfo(
                             "Success",
-                            f"Downloaded {ios_version}-{ios_build_id}-{self.build_id(model)}.plist",
+                            f"Downloaded {ios_version}-{ios_build_id}-{self.build_id(identifier)}.plist",
                         )
 
                     else:
                         with RemoteZip(firmware) as ipsw_zip:
                             ipsw_zip.extract("BuildManifest.plist")
 
-                        (download_path() / f"{model}").mkdir(exist_ok=True)
-
                         shutil.move(
                             "./BuildManifest.plist",
                             download_path()
-                            / f"{model}/{ios_version}-{ios_build_id}-{self.build_id(model)}.plist",
+                            / f"{ios_version}-{ios_build_id}-{self.build_id(identifier)}.plist",
                         )
 
                         messagebox.showinfo(
                             "Success",
-                            f"Downloaded {ios_version}-{ios_build_id}-{self.build_id(model)}.plist",
+                            f"Downloaded {ios_version}-{ios_build_id}-{self.build_id(identifier)}.plist",
                         )
 
                     break
