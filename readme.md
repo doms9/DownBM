@@ -4,17 +4,20 @@ A GUI to download BuildManifest files for Apple Devices
 
 ## Prerequisites
 
-- [Python](https://www.python.org/downloads/)
+- [Python](https://www.python.org/downloads/) (>=3.10)
   - [Pip Package Manager](https://www.python.org/downloads/)
+  - A virtual environment (recommended)
 
 ## Installation
 
-```
+```sh
+# Activate your python virtual environment beforehand
+
 git clone https://github.com/doms9/DownBM.git
 
 cd ./DownBM/
 
-bash -c ./build.sh
+make
 ```
 
 After the build script is executed, run the "DownBM" executable.
