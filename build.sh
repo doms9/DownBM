@@ -8,6 +8,8 @@ else
 
     [ -x "$(command -v pyinstaller)" ] && printf "Building...\n" || python3 -m pip install pyinstaller
 
+    python3 -m pip install requests pyqt5 remotezip
+
     pyinstaller -Fy --console ./source.pyw --distpath="./" --workpath="./Build/" --specpath="./Build/" -i="../icon.ico" -n="DownBM"
 
     rm -rf ./Build/
