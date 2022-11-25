@@ -6,11 +6,11 @@ import shutil
 import sys
 from pathlib import Path
 from tkinter import messagebox
-from typing import Any
+from typing import Any, Union
 
 import requests
 from PyQt5 import QtCore, QtGui, QtWidgets
-from remotezip import RemoteZip
+from remotezip import RangeNotSupported, RemoteZip
 
 
 class Ui_MainWindow:
@@ -155,30 +155,36 @@ class Ui_MainWindow:
                     bm = requests.get(bm_link, timeout=10)
 
                     if bm.status_code == 200:
-                        (
-                            download_path()
-                            / f"{ios_version}-{ios_build_id}-{self.build_id(identifier)}.plist"
-                        ).write_bytes(bm.content)
+                        try:
+                            (
+                                download_path()
+                                / f"{ios_version}-{ios_build_id}-{self.build_id(identifier)}.plist"
+                            ).write_bytes(bm.content)
 
-                        messagebox.showinfo(
-                            "Success",
-                            f"Downloaded {ios_version}-{ios_build_id}-{self.build_id(identifier)}.plist",
-                        )
+                            messagebox.showinfo(
+                                "Success",
+                                f"Downloaded {ios_version}-{ios_build_id}-{self.build_id(identifier)}.plist",
+                            )
+                        except FileNotFoundError:
+                            pass
 
                     else:
-                        with RemoteZip(firmware) as ipsw_zip:
-                            ipsw_zip.extract("BuildManifest.plist")
+                        try:
+                            with RemoteZip(firmware) as ipsw_zip:
+                                ipsw_zip.extract("BuildManifest.plist")
 
-                        shutil.move(
-                            "./BuildManifest.plist",
-                            download_path()
-                            / f"{ios_version}-{ios_build_id}-{self.build_id(identifier)}.plist",
-                        )
+                            shutil.move(
+                                "./BuildManifest.plist",
+                                download_path()
+                                / f"{ios_version}-{ios_build_id}-{self.build_id(identifier)}.plist",
+                            )
 
-                        messagebox.showinfo(
-                            "Success",
-                            f"Downloaded {ios_version}-{ios_build_id}-{self.build_id(identifier)}.plist",
-                        )
+                            messagebox.showinfo(
+                                "Success",
+                                f"Downloaded {ios_version}-{ios_build_id}-{self.build_id(identifier)}.plist",
+                            )
+                        except RangeNotSupported:
+                            pass
 
                     break
 
@@ -251,7 +257,7 @@ def pick_new() -> None:
     folder_path = Path(folder_path).resolve()
 
 
-def download_path() -> Path | Any:
+def download_path() -> Union[Path, Any]:
     if len(sys.argv) == 2:
         return Path(sys.argv[1])
 
