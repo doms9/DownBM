@@ -7,5 +7,6 @@ setup:
 		python3 -m pip install requests pyqt5 remotezip; \
 		pyinstaller -Fyw ./source.pyw --distpath="./" --workpath="./Build/" --specpath="./Build/" -i="../icon.ico" -n="DownBM"; \
 		rm -rf ./Build/; \
-		printf "\nSuccessfully built DownBM!"; \
+		clear; \
+		printf "Successfully built DownBM!"; \
 	fi;
